@@ -1,15 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FiSend,
-  FiMenu,
-  FiPlus,
-  FiTrash2,
-  FiUser,
-  FiLogOut
-} from "react-icons/fi";
+  Send,
+  Menu,
+  Plus,
+  Trash2,
+  User,
+  LogOut,
+  Sparkles,
+  MessageCircle,
+  Clock
+} from "lucide-react";
 import { GiLotusFlower, GiMeditation } from "react-icons/gi";
-import { BiInfinite } from "react-icons/bi";
 import LoadingSpinner from "./LoadingSpinner";
 import DivineBg from "./DivineBg";
 
@@ -38,7 +40,7 @@ const ChatWindow = ({
   }, [messages]);
 
   return (
-    <div className="h-screen relative flex overflow-hidden bg-gradient-to-br from-amber-50 via-purple-50 to-indigo-100">
+    <div className="h-screen relative flex overflow-hidden bg-gradient-to-br from-orange-50/30 via-rose-50/30 to-amber-50/50">
       {/* Ethereal Background */}
       <DivineBg />
 
@@ -50,68 +52,84 @@ const ChatWindow = ({
             animate={{ x: 0 }}
             exit={{ x: -320 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="w-80 bg-white/70 backdrop-blur-2xl shadow-2xl flex flex-col relative z-20 border-r border-white/30 rounded-tr-3xl rounded-br-3xl"
+            className="w-80 bg-white/80 backdrop-blur-3xl shadow-2xl flex flex-col relative z-20 border-r border-white/40"
           >
             {/* Sidebar Header */}
-            <div className="p-6 border-b border-white/30">
-              <div className="flex items-center justify-between mb-4">
+            <div className="p-5 border-b border-orange-100/50">
+              <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 bg-gradient-to-br from-purple-500 to-amber-500 rounded-full flex items-center justify-center shadow-md">
-                    <GiLotusFlower className="text-white text-base" />
-                  </div>
-                  <h2 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-amber-600 bg-clip-text text-transparent">
-                    Divine Chats
+                  <motion.div
+                    whileHover={{ rotate: 180, scale: 1.1 }}
+                    transition={{ duration: 0.4 }}
+                    className="w-10 h-10 bg-gradient-to-br from-orange-400 via-amber-400 to-yellow-400 rounded-2xl flex items-center justify-center shadow-lg"
+                  >
+                    <Sparkles className="text-white w-5 h-5" />
+                  </motion.div>
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Sacred Chats
                   </h2>
                 </div>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => setShowSidebar(false)}
-                  className="text-gray-400 hover:text-purple-600 p-2 rounded-lg hover:bg-purple-50 transition-all duration-200"
+                  className="text-gray-400 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 transition-all duration-200"
                 >
                   ✕
-                </button>
+                </motion.button>
               </div>
 
               <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={createNewChat}
-                className="w-full bg-gradient-to-r from-purple-500 to-amber-500 text-white py-3 rounded-xl hover:from-purple-600 hover:to-amber-600 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400 text-white py-3.5 rounded-2xl shadow-lg hover:shadow-xl flex items-center justify-center gap-2 font-medium"
               >
-                <FiPlus className="text-lg" />
-                Start New Journey
+                <Plus className="w-5 h-5" />
+                New Conversation
               </motion.button>
             </div>
 
             {/* User Info */}
-            <div className="p-6 border-b border-white/30">
+            <div className="p-5 border-b border-orange-100/50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center">
-                    <FiUser className="text-white" />
-                  </div>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    className="w-11 h-11 bg-gradient-to-br from-rose-400 via-pink-400 to-orange-400 rounded-2xl flex items-center justify-center shadow-md"
+                  >
+                    <User className="text-white w-5 h-5" />
+                  </motion.div>
                   <div>
-                    <p className="font-semibold text-gray-800">
+                    <p className="font-semibold text-gray-800 text-sm">
                       {user?.username}
                     </p>
                     <p className="text-xs text-gray-500">{user?.email}</p>
                   </div>
                 </div>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.1, x: 2 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={logout}
-                  className="text-red-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-all duration-200"
+                  className="text-rose-400 hover:text-rose-600 p-2 rounded-xl hover:bg-rose-50 transition-all duration-200"
                 >
-                  <FiLogOut />
-                </button>
+                  <LogOut className="w-4 h-4" />
+                </motion.button>
               </div>
             </div>
 
             {/* Chat List */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto px-3 py-2">
               {chats.length === 0 ? (
-                <div className="p-6 text-center text-gray-500">
-                  <GiMeditation className="text-4xl mx-auto mb-4 opacity-60" />
-                  <p>No sacred conversations yet</p>
-                  <p className="text-sm mt-2">Begin your divine dialogue 🌸</p>
+                <div className="p-6 text-center text-gray-500 mt-8">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  >
+                    <GiMeditation className="text-5xl mx-auto mb-4 text-amber-400/60" />
+                  </motion.div>
+                  <p className="text-sm font-medium">No conversations yet</p>
+                  <p className="text-xs mt-2 text-gray-400">Start your spiritual journey</p>
                 </div>
               ) : (
                 chats.map((chat) => (
@@ -119,33 +137,43 @@ const ChatWindow = ({
                     key={chat.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    whileHover={{ x: 6 }}
-                    className={`p-4 border-b border-white/20 cursor-pointer rounded-xl mx-2 mt-2 transition-all ${
+                    whileHover={{ x: 4, scale: 1.01 }}
+                    className={`p-4 cursor-pointer rounded-2xl mb-2 transition-all ${
                       currentChatId === chat.id
-                        ? "bg-gradient-to-r from-purple-100 to-amber-100 shadow-md"
-                        : "hover:bg-white/60"
+                        ? "bg-gradient-to-r from-orange-100 via-amber-100 to-yellow-100 shadow-md border border-amber-200/50"
+                        : "hover:bg-white/70 border border-transparent"
                     }`}
                     onClick={() => loadChat(chat.id)}
                   >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-semibold text-gray-700 truncate">
-                          {chat.title}
-                        </p>
-                        <p className="text-sm text-gray-500 flex items-center gap-1">
-                          <BiInfinite className="text-xs" />
-                          {new Date(chat.updated_at).toLocaleDateString()}
-                        </p>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-start gap-3 flex-1 min-w-0">
+                        <motion.div
+                          whileHover={{ rotate: 15 }}
+                          className="w-8 h-8 bg-gradient-to-br from-amber-300 to-orange-300 rounded-xl flex items-center justify-center shadow-sm mt-0.5 flex-shrink-0"
+                        >
+                          <MessageCircle className="w-4 h-4 text-white" />
+                        </motion.div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-gray-800 text-sm truncate">
+                            {chat.title}
+                          </p>
+                          <p className="text-xs text-gray-500 flex items-center gap-1.5 mt-1">
+                            <Clock className="w-3 h-3" />
+                            {new Date(chat.updated_at).toLocaleDateString()}
+                          </p>
+                        </div>
                       </div>
-                      <button
+                      <motion.button
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
                         onClick={(e) => {
                           e.stopPropagation();
                           deleteChat(chat.id);
                         }}
-                        className="text-red-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-all"
+                        className="text-rose-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-all flex-shrink-0"
                       >
-                        <FiTrash2 className="text-sm" />
-                      </button>
+                        <Trash2 className="w-4 h-4" />
+                      </motion.button>
                     </div>
                   </motion.div>
                 ))
@@ -158,28 +186,32 @@ const ChatWindow = ({
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col relative z-10">
         {/* Top Bar */}
-        <div className="bg-white/70 backdrop-blur-xl shadow-md p-4 flex items-center justify-between border-b border-white/20 rounded-bl-3xl">
+        <div className="bg-white/80 backdrop-blur-2xl shadow-sm p-5 flex items-center justify-between border-b border-orange-100/50">
           <div className="flex items-center gap-4">
             {!showSidebar && (
               <motion.button
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setShowSidebar(true)}
-                className="text-gray-500 hover:text-purple-600 p-2 rounded-lg hover:bg-purple-50"
+                className="text-gray-400 hover:text-amber-600 p-2 rounded-xl hover:bg-amber-50/50 transition-all"
               >
-                <FiMenu className="text-xl" />
+                <Menu className="w-5 h-5" />
               </motion.button>
             )}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-amber-500 rounded-full flex items-center justify-center shadow-md">
-                <GiLotusFlower className="text-white text-lg" />
-              </div>
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                className="w-11 h-11 bg-gradient-to-br from-orange-400 via-amber-400 to-yellow-400 rounded-2xl flex items-center justify-center shadow-lg"
+              >
+                <GiLotusFlower className="text-white text-xl" />
+              </motion.div>
               <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-amber-600 bg-clip-text text-transparent">
-                  Shri Krishna’s Guidance
+                <h1 className="text-lg font-bold text-gray-800">
+                  Gita Guidance
                 </h1>
-                <p className="text-sm text-gray-500">
-                  “Speak, child. I am listening.”
+                <p className="text-xs text-gray-500">
+                  Divine wisdom from the Bhagavad Gita
                 </p>
               </div>
             </div>
@@ -187,34 +219,40 @@ const ChatWindow = ({
 
           {currentChatId && (
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               onClick={createNewChat}
-              className="bg-gradient-to-r from-purple-500 to-amber-500 text-white px-4 py-2 rounded-xl shadow-md hover:shadow-xl flex items-center gap-2"
+              className="bg-gradient-to-r from-orange-400 to-amber-400 text-white px-5 py-2.5 rounded-2xl shadow-md hover:shadow-lg flex items-center gap-2 font-medium"
             >
-              <FiPlus />
-              New Chat
+              <Plus className="w-4 h-4" />
+              New
             </motion.button>
           )}
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-6 space-y-5">
           {messages.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-center mt-20"
             >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-amber-500 rounded-full mb-6 shadow-lg">
-                <GiMeditation className="text-3xl text-white" />
-              </div>
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-amber-600 bg-clip-text text-transparent mb-4">
-                Welcome to the Path of Knowledge
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-orange-400 via-amber-400 to-yellow-400 rounded-3xl mb-6 shadow-2xl"
+              >
+                <GiMeditation className="text-4xl text-white" />
+              </motion.div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-3">
+                Welcome to Divine Wisdom
               </h2>
-              <p className="text-gray-600 max-w-md mx-auto">
-                Ask about life, karma, or dharma — receive wisdom from the
-                Bhagavad Gita 🌺
+              <p className="text-gray-600 max-w-md mx-auto leading-relaxed">
+                Ask your questions about life, dharma, or karma
+              </p>
+              <p className="text-amber-600 text-sm mt-2 font-medium">
+                Receive guidance from the Bhagavad Gita
               </p>
             </motion.div>
           ) : (
@@ -229,26 +267,38 @@ const ChatWindow = ({
                 }`}
               >
                 <div
-                  className={`max-w-[75%] p-5 ${
+                  className={`max-w-[80%] md:max-w-[70%] ${
                     msg.sender === "user"
-                      ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-3xl rounded-br-none shadow-xl"
-                      : "bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl rounded-bl-none shadow-lg"
+                      ? "bg-gradient-to-br from-blue-500 to-cyan-500 text-white p-4 rounded-3xl rounded-br-md shadow-lg"
+                      : "bg-gradient-to-br from-white/90 to-orange-50/50 backdrop-blur-xl border border-orange-100/50 p-5 rounded-3xl rounded-bl-md shadow-xl"
                   }`}
                 >
                   {msg.sender === "bot" && msg.shloka ? (
-                    <div className="space-y-3">
-                      <div className="text-amber-700 font-semibold italic bg-amber-50 p-3 rounded-xl border border-amber-200">
-                        “{msg.shloka}”
+                    <div className="space-y-4">
+                      <motion.div
+                        initial={{ scale: 0.95 }}
+                        animate={{ scale: 1 }}
+                        className="bg-gradient-to-br from-amber-100 via-yellow-50 to-orange-100 p-4 rounded-2xl border-2 border-amber-300/40 shadow-inner"
+                      >
+                        <p className="text-[#D4AF37] font-bold text-base leading-relaxed italic">
+                          "{msg.shloka}"
+                        </p>
+                      </motion.div>
+                      <div className="space-y-3">
+                        <p className="text-gray-700 text-sm leading-[1.8] font-medium">
+                          {msg.meaning}
+                        </p>
+                        {msg.guidance && (
+                          <div className="pt-2 border-t border-amber-200/50">
+                            <p className="text-amber-800 text-sm leading-[1.8] font-medium">
+                              {msg.guidance}
+                            </p>
+                          </div>
+                        )}
                       </div>
-                      <p className="text-gray-700 text-sm leading-relaxed">
-                        {msg.meaning}
-                      </p>
-                      <p className="text-purple-700 text-sm leading-relaxed font-medium">
-                        {msg.guidance}
-                      </p>
                     </div>
                   ) : (
-                    <p className="leading-relaxed">{msg.text}</p>
+                    <p className="leading-relaxed text-sm">{msg.text}</p>
                   )}
                 </div>
               </motion.div>
@@ -256,7 +306,7 @@ const ChatWindow = ({
           )}
           {loading && (
             <div className="flex justify-start">
-              <div className="bg-white/70 backdrop-blur-md p-6 rounded-3xl border border-white/30 shadow-lg">
+              <div className="bg-white/90 backdrop-blur-xl p-6 rounded-3xl rounded-bl-md border border-orange-100/50 shadow-xl">
                 <LoadingSpinner />
               </div>
             </div>
@@ -265,11 +315,11 @@ const ChatWindow = ({
         </div>
 
         {/* Input */}
-        <div className="bg-white/60 backdrop-blur-2xl border-t border-white/30 p-6">
-          <div className="flex gap-4 max-w-4xl mx-auto">
+        <div className="bg-white/80 backdrop-blur-2xl border-t border-orange-100/50 p-6">
+          <div className="flex gap-3 max-w-4xl mx-auto">
             <textarea
-              className="flex-1 p-4 bg-white/70 border-2 border-transparent rounded-2xl focus:border-purple-400 focus:bg-white transition-all resize-none shadow-inner"
-              placeholder="Ask your divine question... e.g. 'How can I find peace amidst chaos?'"
+              className="flex-1 p-4 bg-white border-2 border-orange-100/50 rounded-2xl focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-200/50 transition-all resize-none shadow-sm placeholder:text-gray-400"
+              placeholder="Ask your question... e.g., 'How do I overcome fear?'"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -281,11 +331,11 @@ const ChatWindow = ({
               rows="2"
             />
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}
               onClick={sendMessage}
               disabled={loading || !input.trim()}
-              className="self-end bg-gradient-to-r from-purple-500 to-amber-500 text-white p-4 rounded-2xl hover:from-purple-600 hover:to-amber-600 disabled:opacity-50 shadow-lg hover:shadow-xl"
+              className="self-end bg-gradient-to-br from-orange-400 via-amber-400 to-yellow-400 text-white p-4 rounded-2xl disabled:opacity-40 shadow-lg hover:shadow-xl transition-all"
             >
               {loading ? (
                 <motion.div
@@ -295,7 +345,7 @@ const ChatWindow = ({
                   <GiLotusFlower className="text-xl" />
                 </motion.div>
               ) : (
-                <FiSend className="text-xl" />
+                <Send className="w-5 h-5" />
               )}
             </motion.button>
           </div>

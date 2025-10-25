@@ -1,9 +1,9 @@
+/* Import soft and elegant fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import soft and elegant fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap');
 
 /* Base font setup */
 * {
@@ -12,8 +12,8 @@
 }
 
 body {
-  /* Soft heavenly gradient — like your screenshot */
-  background: linear-gradient(180deg, #dff4ff 0%, #fdeef5 50%, #fff9eb 100%);
+  /* Soft divine gradient — warm and spiritual */
+  background: linear-gradient(180deg, #fff5eb 0%, #fef3e7 50%, #fff9f0 100%);
   min-height: 100vh;
   overflow-x: hidden;
   color: #333;
@@ -60,16 +60,20 @@ body {
   opacity: 0.8;
 }
 
-/* Custom scrollbar — soft gold theme */
+/* Custom scrollbar — soft amber/gold theme */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 248, 240, 0.5);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #f9e8a1, #f5d16b);
-  border-radius: 3px;
+  background: linear-gradient(180deg, #fbbf24, #f59e0b);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #f7d76d, #f2c94c);
+  background: linear-gradient(180deg, #f59e0b, #d97706);
 }
